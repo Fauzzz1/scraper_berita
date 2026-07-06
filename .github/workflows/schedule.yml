@@ -1,0 +1,31 @@
+name: News Sentiment Pipeline
+on:
+  schedule:
+    - cron: '0 1 * * *'
+  workflow_dispatch: 
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    - name: Install dependencies
+      run: |
+        pip install requests beautifulsoup4 newspaper3k googlenewsdecoder pandas nltk sastrawi wordcloud matplotlib seaborn lxml[html-clean]
+    - name: Run pipeline
+      run: |
+        python scraper.py
+        python cleaning.py
+        python report.py
+    - name: Commit hasil
+      run: |
+        git config --global user.email "action@github.com"
+        git config --global user.name "GitHub Action"
+        git add data/
+        git commit -m "auto: update data $(date)" || echo "No changes"
+        git push
