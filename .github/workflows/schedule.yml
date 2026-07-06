@@ -1,4 +1,4 @@
-name: News Sentiment Pipeline
+name: Berita baru
 on:
   schedule:
     - cron: '0 1 * * *'  
@@ -19,9 +19,9 @@ jobs:
         pip install requests beautifulsoup4 newspaper3k googlenewsdecoder pandas nltk sastrawi supabase wordcloud matplotlib seaborn lxml[html-clean]
     - name: Run pipeline
       run: |
-        python scraper.py
-        python cleaning.py
-        python report.py
+        python src/scraper.py
+        python src/cleaning.py
+        python src/report.py
     - name: Commit hasil
       run: |
         git config --global user.email "action@github.com"
