@@ -29,6 +29,5 @@ jobs:
       run: |
         git config --global user.email "action@github.com"
         git config --global user.name "GitHub Action"
-        git add data/
         git commit -m "auto: update data $(date)" || echo "No changes"
         git push
