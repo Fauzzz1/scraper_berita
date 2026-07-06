@@ -1,7 +1,7 @@
 name: News Sentiment Pipeline
 on:
   schedule:
-    - cron: '0 1 * * *'
+    - cron: '0 1 * * *'  
   workflow_dispatch: 
 jobs:
   run-pipeline:
@@ -16,7 +16,7 @@ jobs:
         python-version: '3.11'
     - name: Install dependencies
       run: |
-        pip install requests beautifulsoup4 newspaper3k googlenewsdecoder pandas nltk sastrawi wordcloud matplotlib seaborn lxml[html-clean]
+        pip install requests beautifulsoup4 newspaper3k googlenewsdecoder pandas nltk sastrawi supabase wordcloud matplotlib seaborn lxml[html-clean]
     - name: Run pipeline
       run: |
         python scraper.py
