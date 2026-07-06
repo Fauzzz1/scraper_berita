@@ -18,6 +18,9 @@ jobs:
       run: |
         pip install requests beautifulsoup4 newspaper3k googlenewsdecoder python-dotenv pandas nltk sastrawi supabase wordcloud matplotlib seaborn lxml[html-clean]
     - name: Run pipeline
+      env:
+        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
       run: |
         python src/scraper.py
         python src/cleaning.py
