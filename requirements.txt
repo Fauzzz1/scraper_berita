@@ -1,0 +1,14 @@
+beautifulsoup4==4.15.0
+googlenewsdecoder==0.1.7
+matplotlib==3.11.0
+newspaper3k==0.2.8
+nltk==3.9.4
+pandas==3.0.3
+python-dotenv==1.2.2
+Requests==2.34.2
+Sastrawi==1.0.1
+Sastrawi==1.0.1
+schedule==1.2.2
+seaborn==0.13.2
+supabase==2.31.0
+wordcloud==1.9.6
