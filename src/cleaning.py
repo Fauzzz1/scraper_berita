@@ -40,12 +40,37 @@ def casefoldingText(text):
 def tokenizingText(text):
     text = word_tokenize(text)
     return text
-
 def filteringText(text):
     listStopwords = set(stopwords.words('indonesian'))
     listStopwords1 = set(stopwords.words('english'))
     listStopwords.update(listStopwords1)
-    listStopwords.update(['iya','yaa','gak','nya','na','sih','ku',"di","ga","ya","gaa","loh","kah","woi","woii","woy"])
+
+    custom_stopwords = {
+        'iya', 'yaa', 'ya', 'yah',
+        'loh', 'kah', 'woi', 'woii', 'woy',
+        'nih', 'nihh', 'dong', 'deh', 'kok',
+        'lah', 'pun', 'eh', 'oh',
+        'oke', 'ok',
+        'hehe', 'haha', 'hahaha',
+        'wkwk', 'wk'
+    }
+
+    important_words = {
+        'tidak', 'bukan', 'belum', 'jangan',
+        'naik', 'turun', 'menguat', 'melemah',
+        'beli', 'jual', 'borong', 'lepas',
+        'laba', 'rugi', 'untung',
+        'cuan', 'loss',
+        'saham', 'emiten', 'ihsg', 'bei',
+        'investor', 'asing',
+        'dividen', 'ipo',
+        'anjlok', 'meroket',
+        'positif', 'negatif'
+    }
+
+    listStopwords.update(custom_stopwords)
+    listStopwords.difference_update(important_words)
+
     filtered = [txt for txt in text if txt not in listStopwords]
     return filtered
 
@@ -59,7 +84,30 @@ def stemmingText(text):
 def toSentence(list_words):
     return ' '.join(word for word in list_words)
 
-slangwords = {"@": "di", "abis": "habis", "wtb": "beli", "masi": "masih", "wts": "jual", "wtt": "tukar", "bgt": "banget", "maks": "maksimal"}
+slangwords = {
+    "dr": "dari",
+    "utk": "untuk",
+    "yg": "yang",
+    "jd": "jadi",
+    "krn": "karena",
+    "karna": "karena",
+    "tp": "tetapi",
+    "tpi": "tetapi",
+    "dgn": "dengan",
+    "dll": "dan lain lain",
+
+    "ga": "tidak",
+    "gak": "tidak",
+    "gk": "tidak",
+    "ngga": "tidak",
+    "nggak": "tidak",
+    "engga": "tidak",
+    "enggak": "tidak",
+
+    "emiten2": "emiten",
+    "saham2": "saham",
+    "investor2": "investor"
+}
 
 def fix_slangwords(text):
     words = text.split()
