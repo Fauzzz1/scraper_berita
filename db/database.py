@@ -29,6 +29,16 @@ def get_article_proses():
     response = supabase.table("article_proses").select("*").execute()
     return response.data
 
+def insert_laporan_mingguan(data):
+    try:
+        supabase.table("laporan_mingguan").upsert(data, on_conflict="url").execute()
+    except Exception as e:
+        print(f"Error : {e}")
+        
+def get_laporan_mingguan():
+    response = supabase.table("laporan_mingguan").select("*").execute()
+    return response.data
+
 def upload_plot(file_path, file_name):
     with open(file_path, 'rb') as f:
         supabase.storage.from_('plots').upload(
