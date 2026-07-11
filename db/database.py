@@ -30,10 +30,15 @@ def get_article_proses():
     return response.data
 
 def insert_laporan_mingguan(data):
-    try:
-        supabase.table("laporan_mingguan").upsert(data, on_conflict="url").execute()
-    except Exception as e:
-        print(f"Error : {e}")
+    return (
+        supabase
+        .table("laporan_mingguan")
+        .upsert(
+            data,
+            on_conflict="periode_awal,periode_akhir"
+        )
+        .execute()
+    )
         
 def get_laporan_mingguan():
     response = supabase.table("laporan_mingguan").select("*").execute()

@@ -2,10 +2,13 @@ name: Berita baru
 on:
   schedule:
     - cron: '0 1 * * *'  
+    - cron: '0 3 * * 0'
   workflow_dispatch: 
 jobs:
-  run-pipeline:
+  daily-pipeline:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.schedule == '0 1 * * *' }}
     runs-on: ubuntu-latest
+
     permissions:
       contents: write
     steps:
@@ -17,7 +20,7 @@ jobs:
     - name: Install dependencies
       run: |
         pip install requests beautifulsoup4 newspaper3k googlenewsdecoder python-dotenv pandas nltk sastrawi supabase wordcloud matplotlib seaborn lxml[html-clean]
-    - name: Run pipeline
+    - name: Run daily pipeline
       env:
         SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
         SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
@@ -31,3 +34,27 @@ jobs:
         git config --global user.name "GitHub Action"
         git commit -m "auto: update data $(date)" || echo "No changes"
         git push
+        
+  weekly-analysis:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.schedule == '0 3 * * 0' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install weekly dependencies
+        run: |
+          pip install python-dotenv google-genai supabase pandas
+
+      - name: Run weekly analysis
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python src/analysis.py
